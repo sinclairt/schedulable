@@ -1,0 +1,27 @@
+{
+  "name": "wtbi/schedulable",
+  "description": "Schedule any object with schedulable",
+  "type": "library",
+  "require": {
+    "nesbot/carbon": "^1.21",
+    "mtdowling/cron-expression": "^1.1",
+    "illuminate/support": "^5.2",
+    "illuminate/database": "^5.2"
+  },
+  "autoload": {
+    "psr-0": {
+      "Sinclair\\Schedulable": "src/"
+    },
+    "files": [
+      "src/Wtbi/Schedulable/helpers.php"
+    ]
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tom Sinclair",
+      "email": "tom.sinclair31@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev"
+}
