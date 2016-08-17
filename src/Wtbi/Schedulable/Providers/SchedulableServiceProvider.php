@@ -3,6 +3,10 @@
 namespace Wtbi\Schedulable\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
+use Wtbi\Schedulable\Contracts\ScheduleFactory as ScheduleFactoryInterface;
+use Wtbi\Schedulable\Models\Schedule as ScheduleModel;
+use Wtbi\Schedulable\Services\ScheduleFactory as ScheduleFactoryService;
 
 class SchedulableServiceProvider extends ServiceProvider
 {
@@ -15,10 +19,10 @@ class SchedulableServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind(\Wtbi\Schedulable\Contracts\Schedule::class, \Wtbi\Schedulable\Models\Schedule::class);
-        $this->app->bind('Schedule', \Wtbi\Schedulable\Contracts\Schedule::class);
+        $this->app->bind(ScheduleInterface::class, ScheduleModel::class);
+        $this->app->bind('Schedule', ScheduleInterface::class);
 
-        $this->app->bind(\Wtbi\Schedulable\Contracts\ScheduleFactory::class, \Wtbi\Schedulable\Services\ScheduleFactory::class);
-        $this->app->bind('ScheduleFactory', \Wtbi\Schedulable\Contracts\ScheduleFactory::class);
+        $this->app->bind(ScheduleFactoryInterface::class, ScheduleFactoryService::class);
+        $this->app->bind('ScheduleFactory', ScheduleFactoryInterface::class);
     }
 }

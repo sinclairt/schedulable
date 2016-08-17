@@ -16,7 +16,7 @@ interface IsSchedulable
     /**
      * Get the schedule.
      *
-     * @return ScheduleInterface
+     * @return ScheduleInterface|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
     public function schedule();
 

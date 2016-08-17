@@ -9,6 +9,18 @@ namespace Wtbi\Schedulable\Contracts;
 interface ScheduleFactory
 {
     /**
+     * @param Schedule $schedule
+     *
+     * @return ScheduleFactory
+     */
+    public function setSchedule( Schedule $schedule );
+
+    /**
+     * @return Schedule
+     */
+    public function getSchedule();
+
+    /**
      * @param null $object
      *
      * @return static
@@ -16,19 +28,26 @@ interface ScheduleFactory
     public function setObject( $object );
 
     /**
+     * @return null|IsSchedulable
+     */
+    public function getObject();
+
+    /**
      * @return static
      */
     public function save();
 
     /**
-     * @return \Wtbi\Schedulable\ScheduleFactory
+     * @return \Wtbi\Schedulable\Services\ScheduleFactory
      */
     public function load();
 
     /**
-     * @return mixed
+     * @param null $schedule
+     *
+     * @return ScheduleFactory
      */
-    public function refresh();
+    public function loadFromSchedule( $schedule = null );
 
     /**
      * @param string $expression
@@ -36,4 +55,14 @@ interface ScheduleFactory
      * @return static
      */
     public function loadFromCron( string $expression );
+
+    /**
+     * @return mixed
+     */
+    public function refresh();
+
+    /**
+     * @return ScheduleFactory
+     */
+    public function resetSchedule();
 }

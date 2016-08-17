@@ -27,7 +27,7 @@ trait IsSchedulable
      */
     public function hasSchedule()
     {
-        return !is_null($this->schedule());
+        return !is_null($this->schedule);
     }
 
     /**

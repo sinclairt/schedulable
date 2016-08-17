@@ -29,6 +29,7 @@ use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
  * @property bool $is_weekly
  * @property bool $is_monthly
  * @property bool $is_annually
+ * @property bool $is_quarterly
  * @property int $frequency_n
  * @property Carbon $starts_at
  * @property Carbon $expires_at

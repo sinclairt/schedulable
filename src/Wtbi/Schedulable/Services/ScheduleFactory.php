@@ -2,10 +2,6 @@
 
 namespace Wtbi\Schedulable\Services;
 
-/**
- * Class Builder
- * @package Wtbi\Schedulable
- */
 use Cron\CronExpression;
 use ReflectionObject;
 use ReflectionProperty;
@@ -13,8 +9,35 @@ use Wtbi\Schedulable\Contracts\IsSchedulable;
 use Wtbi\Schedulable\Contracts\Schedule;
 
 /**
- * Class Builder
+ * Class ScheduleFactory
  * @package Wtbi\Schedulable
+ *
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory minutely()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory hourly()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory daily()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory weekly()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory monthly()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory annually()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory quarterly()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory adhoc()
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isMinutely( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isHourly( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isDaily( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isWeekly( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isMonthly( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isAnnually( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isQuarterly( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isAdhoc( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null minute( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null hour( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null dayOfWeek( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null dayOfMonth( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null monthOfYear( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null year( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|boolean isLastDayOfMonth( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer frequencyN( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null startsAt( $value = null )
+ * @method static \Wtbi\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null expiresAt( $value = null )
  */
 class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 {
@@ -22,7 +45,6 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
      * @var array
      */
     private $mappings = [
-        '@yearly'   => '0 0 1 1 *',
         '@annually' => '0 0 1 1 *',
         '@monthly'  => '0 0 1 * *',
         '@weekly'   => '0 0 * * 0',
@@ -136,6 +158,11 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     protected $is_annually = false;
 
     /**
+     * @var bool
+     */
+    protected $is_quarterly = false;
+
+    /**
      * @var int
      */
     protected $frequency_n = 0;
@@ -162,8 +189,9 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 
         $this->schedule = $schedule;
 
-        if ( $this->object->hasSchedule() )
-            $this->load();
+        if ( !is_null($this->object) )
+            if ( $this->object->hasSchedule() )
+                $this->load();
     }
 
     /**
@@ -177,23 +205,52 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     {
         $this->checkPropertyExists($name);
 
+        // are we setting a property?
         if ( sizeof($arguments) > 0 )
         {
-            if ( $this->isFlag($name) )
-                $this->resetFlags();
-
             $this->{snake_case($name)} = head($arguments);
 
             return $this;
         }
 
+        // are we setting a flag?
+        if ( $this->isFlag('is_' . $name) )
+        {
+            $this->resetFlags();
+
+            $this->{'is_' . snake_case($name)} = true;
+
+            return $this;
+        }
+
+        // or are we trying to get a property?
         return $this->{snake_case($name)};
+    }
+
+    /**
+     * @param Schedule $schedule
+     *
+     * @return ScheduleFactory
+     */
+    public function setSchedule( Schedule $schedule ): ScheduleFactory
+    {
+        $this->schedule = $schedule;
+
+        return $this;
+    }
+
+    /**
+     * @return Schedule
+     */
+    public function getSchedule(): Schedule
+    {
+        return $this->schedule;
     }
 
     /**
      * @param null $object
      *
-     * @return static
+     * @return ScheduleFactory
      */
     public function setObject( $object )
     {
@@ -203,7 +260,15 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     }
 
     /**
-     * @return static
+     * @return null|IsSchedulable
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * @return ScheduleFactory
      */
     public function save()
     {
@@ -211,19 +276,24 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     }
 
     /**
-     * @return $this
+     * @return ScheduleFactory
      */
     public function load()
     {
-        $scheduleVars = $this->object->schedule()
-                                     ->toArray();
+        return $this->reloadProperties($this->object->schedule->toArray());
+    }
 
-        foreach ( $this->schedule->fillableFromArray($scheduleVars) as $key => $value )
-            $this->$key = $value;
+    /**
+     * @param null $schedule
+     *
+     * @return ScheduleFactory
+     */
+    public function loadFromSchedule( $schedule = null )
+    {
+        if ( !is_null($schedule) )
+            $this->setSchedule($schedule);
 
-        $this->schedule = $this->object->schedule;
-
-        return $this;
+        return $this->reloadProperties($this->schedule->toArray());
     }
 
     /**
@@ -235,9 +305,36 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     }
 
     /**
+     * @return ScheduleFactory
+     */
+    public function resetSchedule()
+    {
+        $this->minute = null;
+        $this->hour = null;
+        $this->day_of_week = null;
+        $this->day_of_month = null;
+        $this->month_of_year = null;
+        $this->year = null;
+        $this->is_last_day_of_month = false;
+        $this->is_adhoc = false;
+        $this->is_minutely = false;
+        $this->is_hourly = false;
+        $this->is_daily = false;
+        $this->is_weekly = false;
+        $this->is_monthly = false;
+        $this->is_annually = false;
+        $this->is_quarterly = false;
+        $this->frequency_n = 0;
+        $this->starts_at = null;
+        $this->expires_at = null;
+
+        return $this;
+    }
+
+    /**
      * @param string $expression
      *
-     * @return static
+     * @return ScheduleFactory
      */
     public function loadFromCron( string $expression )
     {
@@ -247,32 +344,36 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
             $this->$value = ( $part = $cron->getExpression($key) ) == '*' ? null : $part;
 
         if ( in_array($expression, array_keys($this->mappings)) )
-            $this->resetFlags()->{'is_' . substr($expression, 1)} = true;
+            $this->resetFlags()->{'is_' . snake_case(substr($expression, 1))} = true;
 
         if ( in_array($expression, $this->mappings) )
-            $this->resetFlags()->{'is_' . array_flip($this->mappings)[ $expression ]} = true;
+            $this->resetFlags()->{'is_' . snake_case(substr(array_flip($this->mappings)[ $expression ], 1))} = true;
 
         return $this;
     }
 
     /**
-     * @return static
+     * @return ScheduleFactory
      */
     protected function update()
     {
         $this->object->schedule()
                      ->update($this->getScheduleProperties());
 
+        $this->schedule = $this->object->schedule->fresh();
+
         return $this;
     }
 
     /**
-     * @return static
+     * @return ScheduleFactory
      */
     protected function create()
     {
         $this->object->schedule()
                      ->create($this->getScheduleProperties());
+
+        $this->schedule = $this->object->fresh()->schedule;
 
         return $this;
     }
@@ -282,18 +383,21 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
      */
     protected function getScheduleProperties()
     {
-        return $this->schedule->fillableFromArray(get_object_vars($this));
+        return array_filter(get_object_vars($this), function ( $value, $key )
+        {
+            return $this->schedule->isFillable($key);
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
      * @param $name
      *
-     * @return static
+     * @return ScheduleFactory
      * @throws \Exception
      */
     protected function checkPropertyExists( $name )
     {
-        if ( !property_exists($this, snake_case($name)) || !$this->isProtected($name) )
+        if ( ( !property_exists($this, snake_case($name)) || !$this->isProtected($name) ) && ( !property_exists($this, 'is_' . snake_case($name)) || !$this->isProtected('is_' . $name) ) )
             throw new \Exception(snake_case($name) . ' is not a property');
 
         return $this;
@@ -308,16 +412,20 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     {
         $reflect = new ReflectionObject($this);
 
-        return in_array(snake_case($name), $reflect->getProperties(ReflectionProperty::IS_PROTECTED));
+        return collect($reflect->getProperties(ReflectionProperty::IS_PROTECTED))
+                   ->where('name', snake_case($name))
+                   ->count() > 0;
     }
 
     /**
-     *
+     * @return ScheduleFactory
      */
     protected function resetFlags()
     {
         foreach ( $this->flags as $flag )
             $this->$flag = false;
+
+        return $this;
     }
 
     /**
@@ -328,5 +436,21 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     protected function isFlag( $name )
     {
         return in_array(snake_case($name), $this->flags);
+    }
+
+    /**
+     * @param $scheduleVars
+     *
+     * @return ScheduleFactory
+     */
+    protected function reloadProperties( $scheduleVars )
+    {
+        foreach ( $scheduleVars as $key => $value )
+            if ( $this->schedule->isFillable($key) && $this->isProtected($key) )
+                $this->$key = $value;
+
+        $this->schedule = $this->object->schedule;
+
+        return $this;
     }
 }
