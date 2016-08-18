@@ -1,0 +1,15 @@
+# This is a sample build configuration for PHP.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Dockerhub as your build environment.
+image: phpunit/phpunit:5.0.3
+
+pipelines:
+  default:
+    - image: laraedit/laraedit
+    - step:
+        script: # Modify the commands below to build your repository.
+          - composer --version
+          - phpunit --version
+          - composer install
+          - phpunit tests
