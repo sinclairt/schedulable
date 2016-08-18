@@ -513,31 +513,4 @@ class ScheduleFactoryTest extends DbTestCase
         $this->assertTrue($schedule->is_quarterly == 0);
         $this->assertTrue($schedule->is_adhoc == 0);
     }
-
-    /**
-     * @param array $attributes
-     *
-     * @return Plan
-     */
-    protected function makePlanWithSchedule( $attributes )
-    {
-        $plan = $this->makePlanWithoutSchedule();
-
-        $plan->schedule()
-             ->create($attributes);
-
-        return $plan;
-    }
-
-    /**
-     * @return Plan
-     */
-    protected function makePlanWithoutSchedule()
-    {
-        $plan = new Plan([ 'name' => 'test_plan' ]);
-
-        $plan->save();
-
-        return $plan;
-    }
 }

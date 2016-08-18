@@ -34,6 +34,7 @@ class CreateSchedulesTable extends Migration
             $table->dateTime('starts_at')->nullable();
             $table->dateTime('expires_at')->nullable();
             $table->dateTime('last_ran_at')->nullable();
+            $table->dateTime('next_runs_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

@@ -360,7 +360,11 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         $this->object->schedule()
                      ->update($this->getScheduleProperties());
 
+        $this->object = $this->object->fresh();
+
         $this->schedule = $this->object->schedule->fresh();
+
+        $this->setScheduleNextRunDate();
 
         return $this;
     }
@@ -373,7 +377,11 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         $this->object->schedule()
                      ->create($this->getScheduleProperties());
 
-        $this->schedule = $this->object->fresh()->schedule;
+        $this->object = $this->object->fresh();
+
+        $this->schedule = $this->object->schedule;
+
+        $this->setScheduleNextRunDate();
 
         return $this;
     }
@@ -452,5 +460,15 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         $this->schedule = $this->object->schedule;
 
         return $this;
+    }
+
+    protected function setScheduleNextRunDate()
+    {
+        $this->schedule->next_runs_at = $this->schedule->next()
+                                                       ->toDateTimeString();
+
+        $this->schedule->save();
+
+        $this->schedule = $this->schedule->fresh();
     }
 }

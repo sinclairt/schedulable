@@ -30,13 +30,50 @@ use Illuminate\Support\Collection;
  * @property Carbon $starts_at
  * @property Carbon $expires_at
  * @property Carbon $last_ran_at
+ * @property Carbon $next_runs_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
+ * @method static dueOn( Carbon $dt, $active = true )
+ * @method static isNow()
+ * @method static isMinutely()
+ * @method static isHourly()
+ * @method static isDaily()
+ * @method static isWeekly()
+ * @method static isMonthly()
+ * @method static isAnnually()
+ * @method static isQuarterly()
+ * @method static isAdhoc()
+ * @method static between( Carbon $dtFrom, Carbon $dtTo = null, $active = true )
+ * @method static day( Carbon $dt )
+ * @method static dayBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static dayOfMonth( int $day )
+ * @method static dayOfMonthBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static dayOfWeek( int $day )
+ * @method static dayOfWeekBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static lastOfMonth( Carbon $dt )
+ * @method static month( int $month )
+ * @method static monthBetween( int $from, int $to )
+ * @method static year( int $year )
+ * @method static yearBetween( int $from, int $to )
+ * @method static hour( int $hour )
+ * @method static hourBetween( int $from, int $to )
+ * @method static minute( int $minute )
+ * @method static minuteBetween( int $from, int $to )
+ * @method static isActive( Carbon $dt = null )
+ * @method static isActiveBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static isExpired( $query, Carbon $dt = null )
  * @mixin \Eloquent
  */
 interface Schedule
 {
+    /**
+     * @param $schedule
+     *
+     * @return mixed
+     */
+    public function getScheduleType( $schedule );
+
     /**
      * Get all of the owning schedulable models.
      */
@@ -71,6 +108,24 @@ interface Schedule
      * @return Collection
      */
     public function previousRunDates( $total );
+
+    /**
+     * @param Carbon $dtFrom
+     * @param Carbon|null $dtTo
+     * @param bool $active
+     *
+     * @return Collection
+     */
+    public static function allRunDatesBetween( Carbon $dtFrom, Carbon $dtTo = null, $active = true );
+
+    /**
+     * @param Carbon $dtFrom
+     * @param Carbon|null $dtTo
+     * @param bool $active
+     *
+     * @return Collection
+     */
+    public function runDatesBetween( Carbon $dtFrom, Carbon $dtTo = null, $active = true );
 
     /**
      * @param Carbon|null $dt
