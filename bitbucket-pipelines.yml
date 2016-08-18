@@ -14,8 +14,8 @@ pipelines:
           - composer install
   branches:
       master:
-        - image: eboraas/laravel
         - step:
+            image: eboraas/laravel
             script:
               - echo "This script runs only on commit to the master branch."
               - composer --version
