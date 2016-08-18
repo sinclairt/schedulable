@@ -20,4 +20,5 @@ pipelines:
               - composer --version
               - phpunit --version
               - composer install
+              - composer update
               - phpunit tests
