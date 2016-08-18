@@ -15,7 +15,7 @@ pipelines:
   branches:
       master:
         - step:
-            image: eboraas/laravel
+            image: geshan/laravel-alpine
             script:
               - echo "This script runs only on commit to the master branch."
               - composer --version
