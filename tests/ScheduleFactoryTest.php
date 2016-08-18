@@ -428,11 +428,10 @@ class ScheduleFactoryTest extends DbTestCase
 
     public function test_i_can_create_a_schedule_fluently_where_an_object_does_not_have_a_schedule()
     {
-        $factory = schedule($this->makePlanWithoutSchedule());
-
-        $factory->hourly()
-                ->minute(5)
-                ->save();
+        $factory = schedule($this->makePlanWithoutSchedule())
+            ->hourly()
+            ->minute(5)
+            ->save();
 
         $this->assertTrue($factory->minute() == 5);
         $this->assertNull($factory->hour());
@@ -512,5 +511,53 @@ class ScheduleFactoryTest extends DbTestCase
         $this->assertTrue($schedule->is_annually == 0);
         $this->assertTrue($schedule->is_quarterly == 0);
         $this->assertTrue($schedule->is_adhoc == 0);
+    }
+
+    public function test_an_invalid_hourly_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: minute');
+        schedule(new Plan([ 'name' => 'hourly' ]))
+            ->hourly()
+            ->save();
+    }
+
+    public function test_an_invalid_daily_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: hour, minute');
+        schedule(new Plan([ 'name' => 'daily' ]))
+            ->daily()
+            ->save();
+    }
+
+    public function test_an_invalid_weekly_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: day_of_week, hour, minute');
+        schedule(new Plan([ 'name' => 'weekly' ]))
+            ->weekly()
+            ->save();
+    }
+
+    public function test_an_invalid_monthly_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: day_of_month, hour, minute');
+        schedule(new Plan([ 'name' => 'monthly' ]))
+            ->monthly()
+            ->save();
+    }
+
+    public function test_an_invalid_annual_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: month_of_year, day_of_month, hour, minute');
+        schedule(new Plan([ 'name' => 'annually' ]))
+            ->annually()
+            ->save();
+    }
+
+    public function test_an_invalid_adhoc_plan()
+    {
+        $this->setExpectedException(Exception::class, 'The following fields need to be set: year, month_of_year, day_of_month, hour, minute');
+        schedule(new Plan([ 'name' => 'adhoc' ]))
+            ->adhoc()
+            ->save();
     }
 }

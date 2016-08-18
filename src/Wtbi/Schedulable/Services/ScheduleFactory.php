@@ -64,6 +64,16 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         'year',
     ];
 
+    private $requiredFields = [
+        'is_minutely' => [ ],
+        'is_hourly'   => [ 'minute' ],
+        'is_daily'    => [ 'hour', 'minute' ],
+        'is_weekly'   => [ 'day_of_week', 'hour', 'minute' ],
+        'is_monthly'  => [ 'day_of_month', 'hour', 'minute' ],
+        'is_annually' => [ 'month_of_year', 'day_of_month', 'hour', 'minute' ],
+        'is_adhoc'    => [ 'year', 'month_of_year', 'day_of_month', 'hour', 'minute' ]
+    ];
+
     /**
      * @var null
      */
@@ -269,9 +279,12 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 
     /**
      * @return ScheduleFactory
+     * @throws \Exception
      */
     public function save()
     {
+        $this->validateRequiredFieldsForSchedule();
+
         return $this->object->hasSchedule() ? $this->update() : $this->create();
     }
 
@@ -470,5 +483,26 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         $this->schedule->save();
 
         $this->schedule = $this->schedule->fresh();
+    }
+
+    protected function validateRequiredFieldsForSchedule()
+    {
+        $flags = [ ];
+        foreach ( $this->flags as $flag )
+            $flags[ $flag ] = $this->$flag;
+
+        $key = head(array_keys(array_filter($flags)));
+
+        $required = $this->requiredFields[ $key ];
+
+        $fields = [ ];
+
+        foreach ( $required as $field )
+            $fields[ $field ] = $this->$field;
+
+        $fields = array_filter($fields);
+
+        if ( sizeof($missing = array_diff($required, array_keys($fields))) > 0 )
+            throw new \Exception('The following fields need to be set: ' . implode(', ', $missing));
     }
 }
