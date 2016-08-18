@@ -6,7 +6,7 @@ image: phpunit/phpunit:5.0.3
 
 pipelines:
   default:
-    - image: laraedit/laraedit
+    - image: eboraas/laravel
     - step:
         script: # Modify the commands below to build your repository.
           - composer --version
