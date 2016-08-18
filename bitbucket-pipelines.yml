@@ -17,4 +17,7 @@ pipelines:
         - step:
             script:
               - echo "This script runs only on commit to the master branch."
+              - composer --version
+              - phpunit --version
+              - composer install
               - phpunit tests
