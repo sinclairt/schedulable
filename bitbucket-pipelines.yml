@@ -6,7 +6,6 @@ image: phpunit/phpunit:5.0.3
 
 pipelines:
   default:
-    - image: eboraas/laravel
     - step:
         script: # Modify the commands below to build your repository.
           - composer --version
@@ -15,7 +14,6 @@ pipelines:
   branches:
       master:
         - step:
-            image: geshan/laravel-alpine
             script:
               - echo "This script runs only on commit to the master branch."
               - composer --version
