@@ -55,7 +55,8 @@ If your object already has a schedule attached, then when you make changes, and 
  frequencyN( $value = null )
  startsAt( $value = null )
  expiresAt( $value = null )
- ```
+```
+ 
 ######Dynamic setting/getting
 This factory uses dynamic methods, so be aware, for example,  calling `schedule($object)->hour()` will return the current hour stored on the schedule factory, however, calling `schedule($object)->hour(10)` will set the hour property to `10` and return the factory for you to keep chaining.
 
@@ -91,6 +92,7 @@ When a schedule has run it is a good idea to run the `hasRun()` method, because 
 #####Scopes
 There a huge number of scopes available to you:
 ```
+
 dueOn( Carbon $dt, $active = true )
 isNow()
 isMinutely()
