@@ -162,6 +162,7 @@ class ModelScopeTest extends DbTestCase
                                        ->addMonth()
                                        ->toDateTimeString())
              ->save();
+
         $this->createMonthlyPlan()
              ->expiresAt(\Carbon\Carbon::now()
                                        ->subYear()
@@ -179,6 +180,7 @@ class ModelScopeTest extends DbTestCase
                                        ->addMonth()
                                        ->toDateTimeString())
              ->save();
+
         $this->createMonthlyPlan()
              ->expiresAt(\Carbon\Carbon::now()
                                        ->subYear()

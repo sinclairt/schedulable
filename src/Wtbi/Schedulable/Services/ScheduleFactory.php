@@ -510,10 +510,16 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
             throw new \Exception('The following fields need to be set: ' . implode(', ', $missing));
 
         // lets remove any unwanted fields
-        $this->resetSchedule();
+        $this->minute = null;
+        $this->hour = null;
+        $this->day_of_week = null;
+        $this->day_of_month = null;
+        $this->month_of_year = null;
+        $this->year = null;
 
         foreach ( $fields as $field => $value )
-            if ( !$this->isFlag($field) )
-                $this->$field = $value;
+            $this->$field = $value;
+
+        $this->$key = true;
     }
 }

@@ -114,7 +114,7 @@ class Schedule extends Model implements ScheduleInterface
      *
      * @var array
      */
-    protected $hidden = [ ];
+    protected $hidden = [];
 
     /**
      * The dates that are returned as Carbon objects
@@ -141,13 +141,12 @@ class Schedule extends Model implements ScheduleInterface
      */
     protected function getDatesForSchedule( $schedule, Carbon $dtFrom, Carbon $dtTo = null, $active = true )
     {
-        $events = [ ];
+        $events = [];
 
         while ( $dtFrom->timestamp <= $dtTo->timestamp )
         {
             if ( ( ( $dtFrom->timestamp >= $schedule->starts_at || is_null($schedule->starts_at) ) && ( $dtFrom->timestamp <= $schedule->expires_at || is_null($schedule->expires_at) ) ) || !$active )
-                $events[] = [ 'schedule_id' => $schedule->id, 'occurs_at' => $schedule->next($dtFrom)
-                                                                                      ->toDateTimeString() ];
+                $events[] = [ 'schedule_id' => $schedule->id, 'occurs_at' => $schedule->next($dtFrom) ];
 
             switch (self::getScheduleType($schedule))
             {
@@ -196,7 +195,7 @@ class Schedule extends Model implements ScheduleInterface
 
                 $schedule->events = $item->map(function ( $item )
                 {
-                    return Carbon::createFromFormat(Carbon::DEFAULT_TO_STRING_FORMAT, $item[ 'occurs_at' ]);
+                    return $item[ 'occurs_at' ];
                 });
 
                 return $schedule;
@@ -298,7 +297,7 @@ class Schedule extends Model implements ScheduleInterface
 
         $instance = new static;
 
-        $events = [ ];
+        $events = [];
         foreach ( $schedules as $schedule )
         {
             $from = clone $dtFrom;
@@ -561,7 +560,7 @@ class Schedule extends Model implements ScheduleInterface
         $schedules = $active ? Schedule::isActiveBetween($dtFrom, $dtTo)
                                        ->get() : Schedule::all();
 
-        $events = [ ];
+        $events = [];
         foreach ( $schedules as $schedule )
         {
             $from = clone $dtFrom;
