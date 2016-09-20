@@ -143,12 +143,14 @@ class Schedule extends Model implements ScheduleInterface
     {
         $events = [];
 
+        $scheduleType = self::getScheduleType($schedule);
+
         while ( $dtFrom->timestamp <= $dtTo->timestamp )
         {
-            if ( ( ( $dtFrom->timestamp >= $schedule->starts_at || is_null($schedule->starts_at) ) && ( $dtFrom->timestamp <= $schedule->expires_at || is_null($schedule->expires_at) ) ) || !$active )
+            if ( ( $this->afterStartsAt($schedule, $dtFrom) && $this->beforeExpiresAt($schedule, $dtFrom) ) || !$active )
                 $events[] = [ 'schedule_id' => $schedule->id, 'occurs_at' => $schedule->next($dtFrom) ];
 
-            switch (self::getScheduleType($schedule))
+            switch ($scheduleType)
             {
                 case 'minutely':
                     $dtFrom->addMinute();
@@ -1081,6 +1083,28 @@ class Schedule extends Model implements ScheduleInterface
             $dt = Carbon::now();
 
         return $query->where('expires_at', '<=', $dt->toDateTimeString());
+    }
+
+    /**
+     * @param $schedule
+     * @param Carbon $dtFrom
+     *
+     * @return bool
+     */
+    protected function afterStartsAt( $schedule, Carbon $dtFrom )
+    {
+        return is_null($schedule->starts_at) || $dtFrom->greaterThanOrEqualTo($schedule->starts_at);
+    }
+
+    /**
+     * @param $schedule
+     * @param Carbon $dtFrom
+     *
+     * @return bool
+     */
+    protected function beforeExpiresAt( $schedule, Carbon $dtFrom )
+    {
+        return is_null($schedule->expires_at) || $dtFrom->lessThanOrEqualTo($schedule->expires_at);
     }
 
 }
