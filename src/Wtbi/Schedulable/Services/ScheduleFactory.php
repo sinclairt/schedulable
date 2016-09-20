@@ -65,7 +65,7 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
     ];
 
     private $requiredFields = [
-        'is_minutely' => [ ],
+        'is_minutely' => [],
         'is_hourly'   => [ 'minute' ],
         'is_daily'    => [ 'hour', 'minute' ],
         'is_weekly'   => [ 'day_of_week', 'hour', 'minute' ],
@@ -211,7 +211,7 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
      * @return $this|mixed
      * @throws \Exception
      */
-    public function __call( $name, $arguments = [ ] )
+    public function __call( $name, $arguments = [] )
     {
         $this->checkPropertyExists($name);
 
@@ -487,7 +487,7 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 
     protected function validateRequiredFieldsForSchedule()
     {
-        $flags = [ ];
+        $flags = [];
         foreach ( $this->flags as $flag )
             $flags[ $flag ] = $this->$flag;
 
@@ -495,12 +495,16 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 
         $required = $this->requiredFields[ $key ];
 
-        $fields = [ ];
+        $fields = [];
 
         foreach ( $required as $field )
             $fields[ $field ] = $this->$field;
 
-        $fields = array_filter($fields);
+        // zeroes will be ok here
+        $fields = array_filter($fields, function ( $value )
+        {
+            return null !== $value;
+        });
 
         if ( sizeof($missing = array_diff($required, array_keys($fields))) > 0 )
             throw new \Exception('The following fields need to be set: ' . implode(', ', $missing));
