@@ -513,6 +513,7 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
         $this->resetSchedule();
 
         foreach ( $fields as $field => $value )
-            $this->$field = $value;
+            if ( !$this->isFlag($field) )
+                $this->$field = $value;
     }
 }
