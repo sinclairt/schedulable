@@ -508,5 +508,9 @@ class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
 
         if ( sizeof($missing = array_diff($required, array_keys($fields))) > 0 )
             throw new \Exception('The following fields need to be set: ' . implode(', ', $missing));
+
+        // lets remove any unwanted fields
+        foreach ( array_diff(array_keys($fields), $required) as $field )
+            $this->$field = null;
     }
 }
