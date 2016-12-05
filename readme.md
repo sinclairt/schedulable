@@ -1,20 +1,20 @@
 #Schedulable
 
 ###Installation
-* Make sure you have access to the WTBI team inside Bitbucket. 
+* Make sure you have access to the TwentyCI team inside Github. 
 * Make sure your have this code block inside your `composer.json` file:
 ```
 "repositories": [
     {
       "type": "composer",
-      "url": "http://satis.wtbidev.co.uk"
+      "url": "http://satis.viewmychain.com"
     }
   ]
 ```
-* Run `composer require wtbi/schedulable`.
-* Register `Wtbi\Schedulable\Providers\SchedulableServiceProvider::class` in `config\app.php` inside the `providers` array.
+* Run `composer require sinclair/schedulable`.
+* Register `Sinclair\Schedulable\Providers\SchedulableServiceProvider::class` in `config\app.php` inside the `providers` array.
 * Run `composer dump-autoload`
-* Run `php artisan vendor:publish`. This wil publish the migration for the schedules.
+* Run `php artisan vendor:publish`. This will publish the migration for the schedules.
 * Run `php artisan migrate`
 
 ###Usage

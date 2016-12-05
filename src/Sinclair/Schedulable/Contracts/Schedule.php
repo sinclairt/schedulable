@@ -1,16 +1,40 @@
 <?php
 
-namespace Wtbi\Schedulable\Contracts;
+namespace Sinclair\Schedulable\Contracts;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
 
 /**
- * Interface IsSchedulable
- * @package Wtbi\Schedulable\Contracts
- * @property Schedule $schedule
- * @method static dueOn(Carbon $dt, $active = true )
+ * Class Schedule
+ * @package Sinclair\Schedulable\Models
+ * @property int $id
+ * @property string $schedulable_type
+ * @property int $schedulable_id
+ * @property int $minute
+ * @property int $hour
+ * @property int $day_of_week
+ * @property int $day_of_month
+ * @property int $month_of_year
+ * @property int $year
+ * @property bool $is_last_day_of_month
+ * @property bool $is_adhoc
+ * @property bool $is_minutely
+ * @property bool $is_hourly
+ * @property bool $is_daily
+ * @property bool $is_weekly
+ * @property bool $is_monthly
+ * @property bool $is_annually
+ * @property bool $is_quarterly
+ * @property int $frequency_n
+ * @property Carbon $starts_at
+ * @property Carbon $expires_at
+ * @property Carbon $last_ran_at
+ * @property Carbon $next_runs_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ * @method static dueOn( Carbon $dt, $active = true )
  * @method static isNow()
  * @method static isMinutely()
  * @method static isHourly()
@@ -20,17 +44,17 @@ use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
  * @method static isAnnually()
  * @method static isQuarterly()
  * @method static isAdhoc()
- * @method static between(Carbon $dtFrom, Carbon $dtTo = null, $active = true )
- * @method static day(Carbon $dt )
+ * @method static between( Carbon $dtFrom, Carbon $dtTo = null, $active = true )
+ * @method static day( Carbon $dt )
  * @method static dayBetween( Carbon $dtFrom, Carbon $dtTo = null )
  * @method static dayOfMonth( int $day )
- * @method static dayOfMonthBetween(Carbon $dtFrom, Carbon $dtTo = null )
- * @method static dayOfWeek(int $day )
- * @method static dayOfWeekBetween(Carbon $dtFrom, Carbon $dtTo = null )
- * @method static lastOfMonth(Carbon $dt )
- * @method static month(int $month )
+ * @method static dayOfMonthBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static dayOfWeek( int $day )
+ * @method static dayOfWeekBetween( Carbon $dtFrom, Carbon $dtTo = null )
+ * @method static lastOfMonth( Carbon $dt )
+ * @method static month( int $month )
  * @method static monthBetween( int $from, int $to )
- * @method static year(int $year )
+ * @method static year( int $year )
  * @method static yearBetween( int $from, int $to )
  * @method static hour( int $hour )
  * @method static hourBetween( int $from, int $to )
@@ -38,21 +62,22 @@ use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
  * @method static minuteBetween( int $from, int $to )
  * @method static isActive( Carbon $dt = null )
  * @method static isActiveBetween( Carbon $dtFrom, Carbon $dtTo = null )
- * @method static isExpired( Carbon $dt = null )
+ * @method static isExpired( $query, Carbon $dt = null )
+ * @mixin \Eloquent
  */
-interface IsSchedulable
+interface Schedule
 {
     /**
-     * Get the schedule.
+     * @param $schedule
      *
-     * @return ScheduleInterface|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
+     * @return mixed
      */
-    public function schedule();
+    public function getScheduleType( $schedule );
 
     /**
-     * @return bool
+     * Get all of the owning schedulable models.
      */
-    public function hasSchedule();
+    public function schedulable();
 
     /**
      * @param Carbon|null $dt
@@ -69,13 +94,6 @@ interface IsSchedulable
      * @return Carbon
      */
     public function previous( Carbon $dt = null, $nth = 0 );
-
-    /**
-     * @param Carbon|null $dt
-     *
-     * @return bool
-     */
-    public function isDue( Carbon $dt = null );
 
     /**
      * @param int $total
@@ -98,12 +116,23 @@ interface IsSchedulable
      *
      * @return Collection
      */
+    public static function allRunDatesBetween( Carbon $dtFrom, Carbon $dtTo = null, $active = true );
+
+    /**
+     * @param Carbon $dtFrom
+     * @param Carbon|null $dtTo
+     * @param bool $active
+     *
+     * @return Collection
+     */
     public function runDatesBetween( Carbon $dtFrom, Carbon $dtTo = null, $active = true );
 
     /**
+     * @param Carbon|null $dt
+     *
      * @return bool
      */
-    public function hasRun();
+    public function isDue( Carbon $dt = null );
 
     /**
      * @param $query

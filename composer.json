@@ -1,5 +1,5 @@
 {
-  "name": "wtbi/schedulable",
+  "name": "sinclair/schedulable",
   "description": "Schedule any object with schedulable",
   "type": "library",
   "require": {
@@ -14,10 +14,10 @@
   },
   "autoload": {
     "psr-0": {
-      "Wtbi\\Schedulable": "src/"
+      "Sinclair\\Schedulable": "src/"
     },
     "files": [
-      "src/Wtbi/Schedulable/helpers.php"
+      "src/Sinclair/Schedulable/helpers.php"
     ]
   },
   "license": "MIT",

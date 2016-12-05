@@ -1,45 +1,45 @@
 <?php
 
-namespace Wtbi\Schedulable\Services;
+namespace Sinclair\Schedulable\Services;
 
 use Cron\CronExpression;
 use ReflectionObject;
 use ReflectionProperty;
-use Wtbi\Schedulable\Contracts\IsSchedulable;
-use Wtbi\Schedulable\Contracts\Schedule;
+use Sinclair\Schedulable\Contracts\IsSchedulable;
+use Sinclair\Schedulable\Contracts\Schedule;
 
 /**
  * Class ScheduleFactory
- * @package Wtbi\Schedulable
+ * @package Sinclair\Schedulable
  *
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory minutely()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory hourly()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory daily()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory weekly()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory monthly()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory annually()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory quarterly()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory adhoc()
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isMinutely( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isHourly( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isDaily( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isWeekly( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isMonthly( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isAnnually( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isQuarterly( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|bool isAdhoc( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null minute( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null hour( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null dayOfWeek( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null dayOfMonth( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null monthOfYear( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer|null year( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|boolean isLastDayOfMonth( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|integer frequencyN( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null startsAt( $value = null )
- * @method static \Wtbi\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null expiresAt( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory minutely()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory hourly()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory daily()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory weekly()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory monthly()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory annually()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory quarterly()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory adhoc()
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isMinutely( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isHourly( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isDaily( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isWeekly( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isMonthly( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isAnnually( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isQuarterly( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|bool isAdhoc( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null minute( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null hour( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null dayOfWeek( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null dayOfMonth( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null monthOfYear( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer|null year( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|boolean isLastDayOfMonth( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|integer frequencyN( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null startsAt( $value = null )
+ * @method static \Sinclair\Schedulable\Services\ScheduleFactory|\Carbon\Carbon|null expiresAt( $value = null )
  */
-class ScheduleFactory implements \Wtbi\Schedulable\Contracts\ScheduleFactory
+class ScheduleFactory implements \Sinclair\Schedulable\Contracts\ScheduleFactory
 {
     /**
      * @var array

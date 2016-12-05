@@ -1,12 +1,12 @@
 <?php
 
-namespace Wtbi\Schedulable\Providers;
+namespace Sinclair\Schedulable\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
-use Wtbi\Schedulable\Contracts\ScheduleFactory as ScheduleFactoryInterface;
-use Wtbi\Schedulable\Models\Schedule as ScheduleModel;
-use Wtbi\Schedulable\Services\ScheduleFactory as ScheduleFactoryService;
+use Sinclair\Schedulable\Contracts\Schedule as ScheduleInterface;
+use Sinclair\Schedulable\Contracts\ScheduleFactory as ScheduleFactoryInterface;
+use Sinclair\Schedulable\Models\Schedule as ScheduleModel;
+use Sinclair\Schedulable\Services\ScheduleFactory as ScheduleFactoryService;
 
 class SchedulableServiceProvider extends ServiceProvider
 {

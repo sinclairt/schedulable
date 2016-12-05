@@ -5,7 +5,7 @@ if ( !function_exists('schedule') )
     /**
      * @param  object|null $object
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     function schedule( $object = null )
     {

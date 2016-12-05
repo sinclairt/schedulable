@@ -3,7 +3,7 @@
 use Illuminate\Filesystem\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
 
-require_once __DIR__ . '/../src/Wtbi/Schedulable/Providers/SchedulableServiceProvider.php';
+require_once __DIR__ . '/../src/Sinclair/Schedulable/Providers/SchedulableServiceProvider.php';
 
 abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -18,7 +18,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-        $app->register(\Wtbi\Schedulable\Providers\SchedulableServiceProvider::class);
+        $app->register(\Sinclair\Schedulable\Providers\SchedulableServiceProvider::class);
 
         $app->make('Illuminate\Contracts\Console\Kernel')
             ->bootstrap();
@@ -88,7 +88,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createMinutelyPlan()
     {
@@ -100,7 +100,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createHourlyPlan( \Carbon\Carbon $dt = null )
     {
@@ -116,7 +116,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createDailyPlan( \Carbon\Carbon $dt = null )
     {
@@ -133,7 +133,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createWeeklyPlan( \Carbon\Carbon $dt = null )
     {
@@ -151,7 +151,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createMonthlyPlan( \Carbon\Carbon $dt = null )
     {
@@ -169,7 +169,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createAnnualPlan( \Carbon\Carbon $dt = null )
     {
@@ -188,7 +188,7 @@ abstract class DbTestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * @param $dt
      *
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     protected function createAdhocPlan( \Carbon\Carbon $dt = null )
     {

@@ -34,7 +34,7 @@ class TraitTest extends DbTestCase
         $plan = $this->createMonthlyPlan()
                      ->getObject();
 
-        $this->assertTrue($plan->schedule instanceof \Wtbi\Schedulable\Models\Schedule);
+        $this->assertTrue($plan->schedule instanceof \Sinclair\Schedulable\Models\Schedule);
     }
 
     public function test_whether_a_plan_has_a_schedule()

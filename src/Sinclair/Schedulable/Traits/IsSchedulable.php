@@ -1,14 +1,14 @@
 <?php
 
-namespace Wtbi\Schedulable\Traits;
+namespace Sinclair\Schedulable\Traits;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Wtbi\Schedulable\Models\Schedule;
+use Sinclair\Schedulable\Models\Schedule;
 
 /**
  * Class IsSchedulable
- * @package Wtbi\Schedulable\Traits
+ * @package Sinclair\Schedulable\Traits
  * @method static dueOn( Carbon $dt, $active = true )
  * @method static isNow()
  * @method static isMinutely()
@@ -44,7 +44,7 @@ trait IsSchedulable
     /**
      * Get the schedule.
      *
-     * @return Schedule|\Wtbi\Schedulable\Contracts\IsSchedulable
+     * @return Schedule|\Sinclair\Schedulable\Contracts\IsSchedulable
      */
     public function schedule()
     {

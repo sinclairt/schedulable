@@ -1,8 +1,8 @@
 <?php
 
-class Plan extends \Illuminate\Database\Eloquent\Model implements \Wtbi\Schedulable\Contracts\IsSchedulable
+class Plan extends \Illuminate\Database\Eloquent\Model implements \Sinclair\Schedulable\Contracts\IsSchedulable
 {
-    use \Wtbi\Schedulable\Traits\IsSchedulable;
+    use \Sinclair\Schedulable\Traits\IsSchedulable;
 
     protected $fillable = ['name'];
 }

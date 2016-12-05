@@ -19,12 +19,12 @@ class ScheduleFactoryTest extends DbTestCase
 
     public function test_the_helper_returns_an_instance_of_schedule_factory()
     {
-        $this->assertTrue(schedule() instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue(schedule() instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
     }
 
     public function test_the_factory_loads_when_an_object_is_supplied_at_construct_without_a_schedule()
     {
-        $this->assertTrue(schedule($this->makePlanWithoutSchedule()) instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue(schedule($this->makePlanWithoutSchedule()) instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
     }
 
     public function test_the_factory_loads_when_an_object_is_supplied_at_construct_with_a_schedule()
@@ -36,7 +36,7 @@ class ScheduleFactoryTest extends DbTestCase
             'is_monthly'   => true,
         ]));
 
-        $this->assertTrue($factory instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue($factory instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
 
         $this->assertTrue($factory->minute() == 0);
 
@@ -118,7 +118,7 @@ class ScheduleFactoryTest extends DbTestCase
     {
         $factory = schedule()->setObject($this->makePlanWithoutSchedule());
 
-        $this->assertTrue($factory instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue($factory instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
 
         $this->assertTrue($factory->getObject()->name == 'test_plan');
     }
@@ -132,7 +132,7 @@ class ScheduleFactoryTest extends DbTestCase
             'is_monthly'   => true,
         ]));
 
-        $this->assertTrue($factory instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue($factory instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
 
         $this->assertTrue($factory->getObject()->name == 'test_plan');
 
@@ -154,7 +154,7 @@ class ScheduleFactoryTest extends DbTestCase
             'is_monthly'   => true,
         ]));
 
-        $this->assertTrue($factory instanceof \Wtbi\Schedulable\Services\ScheduleFactory);
+        $this->assertTrue($factory instanceof \Sinclair\Schedulable\Services\ScheduleFactory);
 
         $this->assertTrue($factory->getObject()->name == 'test_plan');
 
@@ -423,7 +423,7 @@ class ScheduleFactoryTest extends DbTestCase
                 'minute'   => 0,
                 'hour'     => 0,
                 'is_daily' => true,
-            ]))->getSchedule() instanceof \Wtbi\Schedulable\Contracts\Schedule);
+            ]))->getSchedule() instanceof \Sinclair\Schedulable\Contracts\Schedule);
     }
 
     public function test_i_can_create_a_schedule_fluently_where_an_object_does_not_have_a_schedule()

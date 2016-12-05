@@ -1,10 +1,10 @@
 <?php
 
-namespace Wtbi\Schedulable\Contracts;
+namespace Sinclair\Schedulable\Contracts;
 
 /**
  * Class Builder
- * @package Wtbi\Schedulable
+ * @package Sinclair\Schedulable
  */
 interface ScheduleFactory
 {
@@ -38,7 +38,7 @@ interface ScheduleFactory
     public function save();
 
     /**
-     * @return \Wtbi\Schedulable\Services\ScheduleFactory
+     * @return \Sinclair\Schedulable\Services\ScheduleFactory
      */
     public function load();
 

@@ -1,6 +1,6 @@
 <?php
 
-use Wtbi\Schedulable\Models\Schedule;
+use Sinclair\Schedulable\Models\Schedule;
 
 require_once 'DbTestCase.php';
 require_once 'Models/Plan.php';
@@ -232,10 +232,10 @@ class ModelScopeTest extends DbTestCase
 
         $this->assertTrue($collection instanceof \Illuminate\Support\Collection);
 
-        $this->assertEquals(( 7 * 24 * 60 ), $collection[ $minutely->id ]->events->count());
-        $this->assertEquals(( 7 * 24 ), $collection[ $hourly->id ]->events->count());
-        $this->assertEquals(7, $collection[ $daily->id ]->events->count());
-        $this->assertEquals(1, $collection[ $weekly->id ]->events->count());
+        $this->assertEquals(( 7 * 24 * 60 ), $collection[ $minutely->id ]->occasions->count());
+        $this->assertEquals(( 7 * 24 ), $collection[ $hourly->id ]->occasions->count());
+        $this->assertEquals(7, $collection[ $daily->id ]->occasions->count());
+        $this->assertEquals(1, $collection[ $weekly->id ]->occasions->count());
         $this->assertFalse(isset( $collection[ $monthly->id ] ));
         $this->assertFalse(isset( $collection[ $annual->id ] ));
         $this->assertFalse(isset( $collection[ $adhoc->id ] ));
@@ -248,6 +248,6 @@ class ModelScopeTest extends DbTestCase
 
         $this->assertEquals(12, $plan->runDatesBetween(\Carbon\Carbon::now(), \Carbon\Carbon::now()
                                                                                             ->addYear())
-                                     ->first()->events->count());
+                                     ->first()->occasions->count());
     }
 }

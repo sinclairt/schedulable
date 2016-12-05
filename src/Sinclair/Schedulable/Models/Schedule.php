@@ -1,17 +1,17 @@
 <?php
 
-namespace Wtbi\Schedulable\Models;
+namespace Sinclair\Schedulable\Models;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Wtbi\Schedulable\Contracts\Schedule as ScheduleInterface;
+use Sinclair\Schedulable\Contracts\Schedule as ScheduleInterface;
 
 /**
  * Class Schedule
- * @package Wtbi\Schedulable\Models
+ * @package Sinclair\Schedulable\Models
  * @property int $id
  * @property string $schedulable_type
  * @property int $schedulable_id
@@ -195,7 +195,7 @@ class Schedule extends Model implements ScheduleInterface
             {
                 $schedule = Schedule::find($key);
 
-                $schedule->events = $item->map(function ( $item )
+                $schedule->occasions = $item->map(function ( $item )
                 {
                     return $item[ 'occurs_at' ];
                 });
