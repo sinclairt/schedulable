@@ -1,33 +1,24 @@
-#Schedulable
+# Schedulable
 
-###Installation
-* Make sure you have access to the TwentyCI team inside Github. 
-* Make sure your have this code block inside your `composer.json` file:
-```
-"repositories": [
-    {
-      "type": "composer",
-      "url": "http://satis.viewmychain.com"
-    }
-  ]
-```
-* Run `composer require sinclair/schedulable`.
+### Installation
+* Run `composer require sinclairt/schedulable`.
 * Register `Sinclair\Schedulable\Providers\SchedulableServiceProvider::class` in `config\app.php` inside the `providers` array.
 * Run `composer dump-autoload`
 * Run `php artisan vendor:publish`. This will publish the migration for the schedules.
 * Run `php artisan migrate`
 
-###Usage
+### Usage
 Use the `IsSchedulable` trait inside your model. This will give you access to a host of scopes and methods. 
-#####Create Schedules
+
+##### Create Schedules
 Use the helper method to start building your schedules fluently.
 ```
 schedule($object)->daily()->hour(10)->minute(0)->save();
 ```
-#####Update Schedules
+##### Update Schedules
 If your object already has a schedule attached, then when you make changes, and save, the changes will be made to the existing schedule.
 
-#####Available Fields
+##### Available Fields
 ```
  minutely()
  hourly()
@@ -57,13 +48,13 @@ If your object already has a schedule attached, then when you make changes, and 
  expiresAt( $value = null )
 ```
  
-######Dynamic setting/getting
+###### Dynamic setting/getting
 This factory uses dynamic methods, so be aware, for example,  calling `schedule($object)->hour()` will return the current hour stored on the schedule factory, however, calling `schedule($object)->hour(10)` will set the hour property to `10` and return the factory for you to keep chaining.
 
-######Starts At/Expires At
+###### Starts At/Expires At
 You can set when a schedule should start and end, this is optional. The active/expired scopes will take notice of these fields.
 
-######Shortcuts
+###### Shortcuts
 `loadFromSchedule($schedule = null)` - this will load all the attributes from the supplied schedule into the factory. It will also set the factory's schedule object to the schedule supplied. If no schedule is supplied then it will use the currently attached schedule i.e.
  ```
  schedule($objectWithoutSchedule)->loadFromSchedule($anotherSchedule);
@@ -82,14 +73,14 @@ You can set when a schedule should start and end, this is optional. The active/e
  * @daily
  * @hourly
 
-#####Getting dates
+##### Getting dates
 You can get the `next()` date, `previous()` date, `nextRunDates($n)`, `previousRunDates($nth)` (where `$n` is the number of dates you need i.e. 3).
 You can also get the potential run dates between two dates as well with `runDatesBetween(Carbon $from, Carbon $to, bool $active = true)`.
 
-#####Running schedules
+##### Running schedules
 When a schedule has run it is a good idea to run the `hasRun()` method, because this will update the `last_run_at` and `next_runs_at` timestamps.
  
-#####Scopes
+##### Scopes
 There a huge number of scopes available to you:
 ```
 
@@ -124,10 +115,10 @@ isActiveBetween( Carbon $dtFrom, Carbon $dtTo = null )
 isExpired( Carbon $dt = null )
 ```
 
-###Disclaimer
+### Disclaimer
 Although a lot of time and effort has gone into making the <i>between</i> scopes and methods, it does have its limitations, as the dates are calculated on the fly, so be careful when using them, as they could cause a memory failure in your script.
 
-###Other Methods
+### Other Methods
 * `hasSchedule()` - determines whether your object has a schedule attached
 * `isDue( Carbon $dt = null )` - is the schedule due on a specific date, or if `$dt` is blank now.
 * `getScheduleType( $schedule )` - (on the Schedule model)
