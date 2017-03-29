@@ -1,5 +1,5 @@
 {
-  "name": "sinclair/schedulable",
+  "name": "sinclairt/schedulable",
   "description": "Schedule any object with schedulable",
   "type": "library",
   "require": {
